@@ -23,13 +23,15 @@ var express    = require('express'),
 // Bootstrap application settings
 require('./config/express')(app);
 
+var nlcKeys = require('./nlcKeys');
+var twitterKeys = require('./twitterKeys');
+
 // Create the service wrapper
 var nlClassifier = watson.natural_language_classifier({
-  url : 'https://gateway.watsonplatform.net/natural-language-classifier/api',
-  username : '<username>',
-  password : '<password>',
+  url : nlcKeys.url,
+  username : nlcKeys.username,
+  password : nlcKeys.password,
   version  : 'v1'
-
 });
 
 // render index page
@@ -44,7 +46,7 @@ app.get('/', function(req, res) {
 // Responses are json
 app.post('/api/classify', function(req, res, next) {
   var params = {
-    classifier: process.env.CLASSIFIER_ID || '<classifier-id>', // pre-trained classifier
+    classifier: process.env.CLASSIFIER_ID || nlcKeys.classifier, // pre-trained classifier
     text: req.body.text
   };
 
